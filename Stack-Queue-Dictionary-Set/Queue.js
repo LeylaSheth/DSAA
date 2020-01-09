@@ -1,27 +1,54 @@
 class Queue {
   constructor() {
-      this.items = [];
+      this.count = 0;
+      this.lowestCount = 0;
+      this.items = {};
     }
-    //入队操作
+    //向队列添加元素
   enqueue(element) {
-      if (element === undefined) return;
-      this.items.push(element);
-      return this;
+      this.items[this.count] = element;
+      this.count++;
     }
-    //出队操作
+    //从队列移除元素
   dequeue() {
-      return this.items.shift();
+      if (this.isEmpty()) {
+        return undefined;
+      }
+      const result = this.items[this.lowestCount];
+      delete this.items[this.lowestCount];
+      this.lowestCount++;
+      return result;
     }
-    //查看队前元素或即将处理的怨怒是
-  front() {
-      return this.items[0];
+    //查看队列头元素
+  peek() {
+      if (this.isEmpty()) {
+        return undefined;
+      }
+      return this.items[this.lowestCount];
     }
-    //查看队列长度
-  len() {
-      return this.items.length;
+    //检查队列是否为空并获取长度
+  isEmpty() {
+      return this.count - this.lowestCount === 0;
     }
-    //打印队列数据
-  print() {
-    return this.items.join(" ");
+    //大小
+  size() {
+      return this.count - this.lowestCount;
+    }
+    //清空队列
+  clear() {
+    this.items = {};
+    this.count = 0;
+    this.lowestCount = 0;
+  }
+
+  toString() {
+    if (this.isEmpty()) {
+      return '';
+    }
+    let objString = `${this.items[this.lowestCount]}`;
+    for (let i = this.lowestCount + 1; i < this.count; i++) {
+      objString = `${objString},${this.items[i]}`;
+    }
+    return objString;
   }
 }
